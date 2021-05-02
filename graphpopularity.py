@@ -9,11 +9,16 @@ df.drop("sex", axis=1, inplace=True)
 fl.close()
 
 def filter_name(df, name):
-    new_df = df[df['name'] == name]
-    new_df.groupby("year", group_keys=False)
-    new_df.nsmallest(len(new_df), "year")
-    print(new_df["year"])
-    return x, new_df["number"]
+    df = df[df['name'] == name]
+    print(df)
+    df = df.groupby("year")
+    print(df)
+    df = df["number"].sum().reset_index()
+    print(df)
+    # df_grouped.reset_index()
+    # new_df = df_grouped.nsmallest(len(new_df), "year")
+    # print(new_df["year"])
+    return df
 
 def create_graph(graphplt):
     plt.plot(graphplt["year"], graphplt["number"], label=nm)
@@ -21,7 +26,12 @@ def create_graph(graphplt):
     plt.ylabel("Count of name that year")
     plt.legend()
     plt.xlim([1960, 2008])
-    plt.xticks([i for i in range(2008, 1960, -15)])
+    plt.xticks([i for i in range(2008, 1960, -5)])
+    mx = graphplt.max()
+    mxy = int(mx[1])
+    divisions = int(mxy / 10)
+    print(divisions)
+    plt.yticks([i for i in range(mxy, 0, -divisions)])
     plt.show()
     # plt.savefig("count of " + nm + ".png", dpi=1000)
 
